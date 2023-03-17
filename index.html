@@ -5,8 +5,113 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Javascript Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .result{
+            z-index: 9;
+        }
+        .cal-btn,.btn{
+            width: calc( 100% / 3 - 4px);
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+              <a class="navbar-brand" href="#">|+/-|</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              </div>
+            </div>
+          </nav>
+    </header>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="card w-50  mx-auto mt-5">
+                    <div class="card-header bg-white border-0">
+                        <h1 class="text-center">Calculator</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <input type="text" id="equation" class="form-control text-end pb-4" placeholder="0" aria-label="Input">
+                            <span class="result position-absolute bottom-0 end-0 me-3">0</span>
+                        </div>
+                        <div class="button-div">
+                            <button class="cal-btn btn btn-info mb-2 py-3">1</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">2</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">3</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">4</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">5</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">6</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">7</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">8</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">9</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">+</button>
+                            <button class="cal-btn btn btn-info mb-2 py-3">-</button>
+                            <button class="btn btn-info mb-2 py-3" onclick="backspace()"><-</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js" integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(()=>{
+
+            $('#equation').keyup(()=>{
+                var equation_string = $('#equation').val();
+                let result = 0;
+                for(let i=0;i < equation_string.length;i++){
+                    var number = 0;
+                    try{
+                        number = eval(equation_string[i]);
+                        if(result == 0){
+                            result = number;
+                        }
+                    }
+                    catch(err){
+                        operator = equation_string[i];
+                        switch(operator){
+                            case '+':
+                                result = result + eval(equation_string[i+1]);
+                                break;
+                            case '-':
+                                result = result - eval(equation_string[i+1]);
+                                break;
+                            default:
+                                $('#equation').val($('#equation').val().replace(operator,''))
+
+                        }
+                    }
+                }
+                if(equation_string == ""){
+                    $('.result').html("0");
+                }
+                else{
+                    $('.result').html(result);
+                }
+            })
+            
+            $('.cal-btn').click((e)=>{
+                $('#equation').val($('#equation').val()+$(e.target).text())
+                $("#equation").trigger('keyup');
+            })
+
+            
+
+        })
+        let backspace = ()=>{
+            $('#equation').val($('#equation').val().slice(0,-1));
+            $("#equation").trigger('keyup');
+        }
+    </script>
 </body>
 </html>
